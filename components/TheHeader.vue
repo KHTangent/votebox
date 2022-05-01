@@ -7,9 +7,11 @@
 		</div>
 		<div class="spacer"></div>
 		<div>
-			<VBButton background-color="var(--success)" color="var(--primary)">
-				Login
-			</VBButton>
+			<NuxtLink to="login">
+				<VBButton>
+					Login
+				</VBButton>
+			</NuxtLink>
 		</div>
 	</div>
 </template>

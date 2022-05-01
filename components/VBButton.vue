@@ -8,7 +8,7 @@
 import { StyleValue } from 'vue';
 
 const props = defineProps({
-	type: {
+	look: {
 		type: String,
 		default: "primary"
 	}
