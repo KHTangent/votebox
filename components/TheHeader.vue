@@ -5,27 +5,41 @@
 				{{ tab.label }}
 			</NuxtLink>
 		</div>
+		<div class="spacer"></div>
+		<div>
+			<VBButton background-color="var(--success)" color="var(--primary)">
+				Login
+			</VBButton>
+		</div>
 	</div>
 </template>
+
 <script setup lang="ts">
 interface TabEntry {
 	to: string;
 	label: string;
-}Home2
+}
+
 const tabs: TabEntry[] = [
 	{to: "/", label: "Home"},
 	{to: "/about", label: "About"},
 ];
 </script>
+
 <style scoped>
 .navbar {
 	padding: 0.6em 1em 0.6em 1em;
 	background-color: var(--background-alt);
 	display: flex;
+	align-items: center;
 }
 
 .tab {
 	padding-left: 1em;
 	padding-right: 1em;
+}
+
+.spacer {
+	flex-grow: 1;
 }
 </style>

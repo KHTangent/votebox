@@ -1,14 +1,41 @@
 :root {
 	font-family: Roboto, sans-serif;
 
-	/* All color values */
 	--background: #282a36;
+	--background-600: #1d1f27;
+	--background-700: #07080a;
+	--background-800: #000000;
+	--background-900: #000000;
 	--background-alt: #44475a;
+	--background-alt-600: #393c4b;
+	--background-alt-700: #23252e;
+	--background-alt-800: #0d0e11;
+	--background-alt-900: #000000;
 	--primary-text: #f8f8f2;
+	--primary-text-600: #efefe1;
+	--primary-text-700: #ddddc0;
+	--primary-text-800: #cbcb9f;
+	--primary-text-900: #baba7e;
 	--primary: #6272a4;
+	--primary-600: #576696;
+	--primary-700: #445075;
+	--primary-800: #313a55;
+	--primary-900: #1f2435;
 	--success: #50fa7b;
+	--success-600: #37f968;
+	--success-700: #07f644;
+	--success-800: #06c536;
+	--success-900: #049328;
 	--warning: #ffb86c;
+	--warning-600: #ffac52;
+	--warning-700: #ff931f;
+	--warning-800: #eb7a00;
+	--warning-900: #b85f00;
 	--error: #ff5555;
+	--error-600: #ff3b3b;
+	--error-700: #ff0808;
+	--error-800: #d40000;
+	--error-900: #a10000;
 }
 
 body {
