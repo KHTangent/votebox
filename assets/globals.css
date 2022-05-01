@@ -1,0 +1,31 @@
+:root {
+	font-family: Roboto, sans-serif;
+
+	/* All color values */
+	--background: #282a36;
+	--background-alt: #44475a;
+	--primary-text: #f8f8f2;
+	--primary: #6272a4;
+	--success: #50fa7b;
+	--warning: #ffb86c;
+	--error: #ff5555;
+}
+
+body {
+	background-color: var(--background);
+	color: var(--primary-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 300;
+}
+
+p {
+	font-weight: 400;
+	margin: 0.5em;
+}
+
+a {
+	color: var(--primary-text);
+	font-weight: 600;
+}
