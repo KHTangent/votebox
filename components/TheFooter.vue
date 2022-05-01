@@ -5,8 +5,7 @@
 </template>
 <style scoped>
 #footer {
-	width: 100%;
-	background-color: #0078D7;
-	margin: 0;
+	background-color: var(--background-alt);
+	padding: 1em;
 }
 </style>
