@@ -1,0 +1,4 @@
+{
+	"defaultEnv": "db",
+	"db": { "ENV": "DB_URL" }
+}
