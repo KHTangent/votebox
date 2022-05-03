@@ -67,7 +67,7 @@ export default class User {
 	}
 
 	static async fromToken(pool: pg.Pool, token: string) {
-		const query = {
+		let query = {
 			text:
 				"SELECT id, username, password " +
 				"FROM users JOIN access_tokens ON id = user_id " +
@@ -79,6 +79,8 @@ export default class User {
 			throw createError({ statusCode: 401 });
 		}
 		const foundUser = result.rows[0] as DbUser;
+		query.text = "UPDATE access_tokens SET last_used = NOW() WHERE token = $1";
+		await pool.query(query);
 		return new User(foundUser.id, foundUser.username);
 	}
 
