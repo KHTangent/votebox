@@ -6,26 +6,40 @@
 			</NuxtLink>
 		</div>
 		<div class="spacer"></div>
-		<div>
+		<div v-if="localLogin.length === 0">
 			<NuxtLink to="login">
-				<VBButton>
-					Login
-				</VBButton>
+				<VBButton> Login </VBButton>
 			</NuxtLink>
+		</div>
+		<div v-else>
+			<VBButton @click="logout"> Log out </VBButton>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+let localLogin = useLocalLogin();
+
 interface TabEntry {
 	to: string;
 	label: string;
 }
 
 const tabs: TabEntry[] = [
-	{to: "/", label: "Home"},
-	{to: "/about", label: "About"},
+	{ to: "/", label: "Home" },
+	{ to: "/about", label: "About" },
 ];
+
+async function logout() {
+	await $fetch("/api/logout", {
+		method: "POST",
+		headers: {
+			Authorization: "Bearer " + localLogin.value,
+		},
+	});
+	localStorage.clear();
+	localLogin.value = "";
+}
 </script>
 
 <style scoped>

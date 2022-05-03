@@ -98,6 +98,22 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	async logout(pool: pg.Pool, token?: string) {
+		let query: pg.QueryConfig;
+		if (token) {
+			query = {
+				text: "DELETE FROM access_tokens WHERE user_id = $1 AND token = $2",
+				values: [this.id, token],
+			};
+		} else {
+			query = {
+				text: "DELETE FROM access_tokens WHERE user_id = $1",
+				values: [this.id],
+			};
+		}
+		await pool.query(query);
+	}
+
 	async getAccessToken(pool: pg.Pool): Promise<string> {
 		const token = (await randomBytesPromisify(64)).toString("base64");
 		const query = {
