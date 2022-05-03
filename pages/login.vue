@@ -16,7 +16,7 @@
 				<input
 					id="txt-password"
 					class="textfield"
-					type="text"
+					type="password"
 					v-model="password"
 					placeholder="password"
 				/>
