@@ -3,7 +3,9 @@ import pg from "pg";
 
 let pool: pg.Pool;
 
-export async function useDbPool(e: CompatibilityEvent): Promise<pg.Pool> {
+export default async function useDbPool(
+	e: CompatibilityEvent
+): Promise<pg.Pool> {
 	if (!pool) {
 		pool = new pg.Pool({
 			connectionString: process.env["DB_URL"],

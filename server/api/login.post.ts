@@ -1,5 +1,5 @@
 import User from "../models/users";
-import { useDbPool } from "../utils/useDbPool";
+import useDbPool from "../utils/useDbPool";
 interface LoginRequestBody {
 	username: string;
 	password: string;

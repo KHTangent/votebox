@@ -37,6 +37,7 @@
 let username = ref("");
 let password = ref("");
 let errorMessage = ref("");
+let localToken = useLocalLogin();
 
 async function login() {
 	let login;
@@ -49,6 +50,7 @@ async function login() {
 			method: "POST",
 		});
 		localStorage.setItem("token", login.token);
+		localToken.value = login.token;
 	} catch (e) {
 		errorMessage.value = "Invalid username or password";
 		return;

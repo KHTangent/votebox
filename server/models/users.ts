@@ -66,6 +66,22 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	static async fromToken(pool: pg.Pool, token: string) {
+		const query = {
+			text:
+				"SELECT id, username, password " +
+				"FROM users JOIN access_tokens ON id = user_id " +
+				"WHERE token = $1",
+			values: [token],
+		};
+		const result = await pool.query(query);
+		if (result.rowCount < 1) {
+			throw createError({ statusCode: 401 });
+		}
+		const foundUser = result.rows[0] as DbUser;
+		return new User(foundUser.id, foundUser.username);
+	}
+
 	static async login(pool: pg.Pool, username: string, password: string) {
 		const query = {
 			text: "SELECT * FROM users WHERE username = $1",
