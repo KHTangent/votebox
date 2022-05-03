@@ -135,4 +135,52 @@ export default class Voting {
 		}
 		return result.rows[0].token;
 	}
+
+	async checkToken(pool: pg.Pool, token: string) {
+		const query = {
+			text: "SELECT * FROM voting_tokens WHERE voting_id = $1 AND token = $2",
+			values: [this.id, token],
+		};
+		const result = await pool.query(query);
+		if (result.rowCount < 1) {
+			throw createError({ statusCode: 400, message: "invalid token" });
+		}
+	}
+
+	async castVote(pool: pg.Pool, token: string, vote: string) {
+		const optionValid = this.options.findIndex((e) => e.name === vote);
+		if (optionValid === -1) {
+			throw createError({
+				statusCode: 400,
+				message: "option does not exist",
+			});
+		}
+		await this.checkToken(pool, token);
+		const client = await pool.connect();
+		let success = false;
+		try {
+			await client.query("BEGIN");
+			let query = {
+				text: "UPDATE voting_options SET votes = votes + 1 WHERE name = $1",
+				values: [vote],
+			};
+			await client.query(query);
+			query = {
+				text: "DELETE FROM voting_tokens WHERE token = $1",
+				values: [token],
+			};
+			await client.query(query);
+			await client.query("COMMIT");
+			success = true;
+		} catch (e) {
+			await client.query("ROLLBACK");
+		} finally {
+			client.release();
+		}
+		if (!success) {
+			throw createError({
+				statusCode: 500,
+			});
+		}
+	}
 }
