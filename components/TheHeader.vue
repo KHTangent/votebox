@@ -1,13 +1,20 @@
 <template>
 	<div class="navbar">
-		<div class="tab" v-for="tab in tabs">
-			<NuxtLink :to="tab.to">
-				{{ tab.label }}
-			</NuxtLink>
+		<div class="tab">
+			<NuxtLink to="/"> Home </NuxtLink>
+		</div>
+		<div class="tab">
+			<NuxtLink to="/about"> About </NuxtLink>
+		</div>
+		<div class="tab" v-if="localLogin.length > 0">
+			<NuxtLink to="/about"> My votings </NuxtLink>
+		</div>
+		<div class="tab" v-if="localLogin.length > 0">
+			<NuxtLink to="/create"> Create voting </NuxtLink>
 		</div>
 		<div class="spacer"></div>
 		<div v-if="localLogin.length === 0">
-			<NuxtLink to="login">
+			<NuxtLink to="/login">
 				<VBButton> Login </VBButton>
 			</NuxtLink>
 		</div>
@@ -19,16 +26,6 @@
 
 <script setup lang="ts">
 let localLogin = useLocalLogin();
-
-interface TabEntry {
-	to: string;
-	label: string;
-}
-
-const tabs: TabEntry[] = [
-	{ to: "/", label: "Home" },
-	{ to: "/about", label: "About" },
-];
 
 async function logout() {
 	await $fetch("/api/logout", {
