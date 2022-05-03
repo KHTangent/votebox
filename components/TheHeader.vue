@@ -36,6 +36,7 @@ async function logout() {
 	});
 	localStorage.clear();
 	localLogin.value = "";
+	navigateTo({ path: "/" });
 }
 </script>
 
