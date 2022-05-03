@@ -121,4 +121,18 @@ export default class Voting {
 		if (voting) return voting;
 		else throw createError({ statusCode: 500 });
 	}
+
+	async issueToken(pool: pg.Pool): Promise<string> {
+		const query = {
+			text: "INSERT INTO voting_tokens(voting_id) VALUES ($1) RETURNING token",
+			values: [this.id],
+		};
+		const result = await pool.query(query);
+		if (result.rowCount < 1) {
+			throw createError({
+				statusCode: 500,
+			});
+		}
+		return result.rows[0].token;
+	}
 }
