@@ -12,6 +12,13 @@
 				<td>{{ o.votes }}</td>
 			</tr>
 		</table>
+		<VBButton @click="getBallotUrl">Issue token</VBButton>
+		<p>
+			{{ ballot }}
+		</p>
+		<VBButton v-if="ballot.length > 0" @click="copyBallot">{{
+			copyButtonText
+		}}</VBButton>
 	</div>
 	<div v-else>
 		<p>Loading...</p>
@@ -21,6 +28,9 @@
 <script setup lang="ts">
 const route = useRoute();
 const token = useLocalLogin();
+let ballot = ref("");
+let copyButtonText = ref("Copy");
+
 const { data, pending, refresh, error } = await useFetch(
 	`/api/voting/${route.params.id}`,
 	{
@@ -30,6 +40,24 @@ const { data, pending, refresh, error } = await useFetch(
 		},
 	}
 );
+
+async function getBallotUrl() {
+	copyButtonText.value = "Copy";
+	const newData = (await $fetch(`/api/issue/${route.params.id}`, {
+		method: "POST",
+		headers: {
+			Authorization: "Bearer " + token.value,
+		},
+	})) as { token: string };
+	let url = window.location.href;
+	url = url.substring(0, url.lastIndexOf("/voting"));
+	ballot.value = `${url}/vote/${data.value.id}/${newData.token}`;
+}
+
+async function copyBallot() {
+	await navigator.clipboard.writeText(ballot.value);
+	copyButtonText.value = "Copied!";
+}
 </script>
 
 <style scoped></style>
