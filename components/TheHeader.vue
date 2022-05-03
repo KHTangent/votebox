@@ -7,7 +7,7 @@
 			<NuxtLink to="/about"> About </NuxtLink>
 		</div>
 		<div class="tab" v-if="localLogin.length > 0">
-			<NuxtLink to="/about"> My votings </NuxtLink>
+			<NuxtLink to="/votings"> My votings </NuxtLink>
 		</div>
 		<div class="tab" v-if="localLogin.length > 0">
 			<NuxtLink to="/create"> Create voting </NuxtLink>
