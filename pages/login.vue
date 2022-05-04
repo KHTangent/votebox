@@ -37,7 +37,9 @@
 let username = ref("");
 let password = ref("");
 let errorMessage = ref("");
-let localLoginCookie = useCookie("token");
+let localLoginCookie = useCookie("token", {
+	sameSite: "lax",
+});
 let localLogin = useLocalLogin();
 
 async function login() {
