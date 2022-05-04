@@ -17,6 +17,7 @@ const { data, pending, refresh, error } = await useFetch("/api/votings", {
 	headers: {
 		Authorization: "Bearer " + token.value,
 	},
+	server: false,
 });
 </script>
 

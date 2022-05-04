@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 let localLogin = useLocalLogin();
+let localLoginCookie = useCookie("token");
 
 async function logout() {
 	await $fetch("/api/logout", {
@@ -34,7 +35,7 @@ async function logout() {
 			Authorization: "Bearer " + localLogin.value,
 		},
 	});
-	localStorage.clear();
+	localLoginCookie.value = "";
 	localLogin.value = "";
 	navigateTo({ path: "/" });
 }

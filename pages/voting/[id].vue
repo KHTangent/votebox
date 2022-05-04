@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!pending">
+	<div v-if="data">
 		<h1>{{ data.title }}</h1>
 		<VBButton @click="refresh()"> Refresh </VBButton>
 		<table>
@@ -38,9 +38,12 @@ const { data, pending, refresh, error } = await useFetch(
 		headers: {
 			Authorization: "Bearer " + token.value,
 		},
+		server: false,
 	}
 );
-data.value.options.sort((a, b) => b.votes - a.votes);
+if (data.value) {
+	data.value.options.sort((a, b) => b.votes - a.votes);
+}
 
 async function getBallotUrl() {
 	copyButtonText.value = "Copy";
