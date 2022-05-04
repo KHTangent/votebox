@@ -40,6 +40,7 @@ const { data, pending, refresh, error } = await useFetch(
 		},
 	}
 );
+data.value.options.sort((a, b) => b.votes - a.votes);
 
 async function getBallotUrl() {
 	copyButtonText.value = "Copy";
