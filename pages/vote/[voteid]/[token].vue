@@ -19,7 +19,11 @@
 		</p>
 		<p v-else>Vote has been submitted!</p>
 	</div>
-	<p v-else>Loading...</p>
+	<p v-else>
+		Could not get voting options. Your voting token is probably invalid, or has
+		been used before. Please contact the owner of the voting if you believe this
+		is an error.
+	</p>
 </template>
 
 <script setup lang="ts">

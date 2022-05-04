@@ -1,11 +1,14 @@
 <template>
 	<div>
-		<h1>Welcome</h1>
+		<h1>Welcome to VoteBox (beta)</h1>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, eos alias omnis molestias atque minus soluta obcaecati odit hic expedita quaerat vitae laborum at ut nobis neque ipsum aspernatur vero.
+			To create votes, you need to log in. It is currently not possible for
+			guests to create an account. If you want to test out the website, please
+			ask me to make you an account.
 		</p>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, eos alias omnis molestias atque minus soluta obcaecati odit hic expedita quaerat vitae laborum at ut nobis neque ipsum aspernatur vero.
+			If you came here to vote on something, you should've received an unique
+			link. If not, contact the owner of the voting.
 		</p>
 	</div>
 </template>

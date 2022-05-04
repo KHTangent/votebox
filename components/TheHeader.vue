@@ -1,7 +1,7 @@
 <template>
 	<div class="navbar">
 		<div class="tab">
-			<NuxtLink to="/"> Home </NuxtLink>
+			<NuxtLink to="/"> VoteBox </NuxtLink>
 		</div>
 		<div class="tab">
 			<NuxtLink to="/about"> About </NuxtLink>

@@ -18,7 +18,7 @@
 					class="textfield"
 					type="password"
 					v-model="password"
-					placeholder="password"
+					placeholder="Password"
 				/>
 			</div>
 			<div class="formline">
@@ -74,6 +74,7 @@ async function login() {
 }
 .textfield {
 	padding: 0.4em;
+	margin: 0.2em;
 	background: var(--primary-text);
 	color: var(--primary);
 }

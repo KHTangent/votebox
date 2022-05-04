@@ -1,11 +1,18 @@
 <template>
 	<div>
-		<h1>About page</h1>
+		<h1>About VoteBox</h1>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, eos alias omnis molestias atque minus soluta obcaecati odit hic expedita quaerat vitae laborum at ut nobis neque ipsum aspernatur vero.
+			This is a website for online polls, where every vote requires a unique
+			link. It was written in less than three days, so expect bugs and errors.
+			If you find any, please let me know (for example by email:
+			<a href="mailto:contact@khtangent.com">contact@khtangent.com</a>). Full
+			source code for the website can be found on
+			<a href="https://github.com/KHTangent/votebox">my GitHub</a>.
 		</p>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, eos alias omnis molestias atque minus soluta obcaecati odit hic expedita quaerat vitae laborum at ut nobis neque ipsum aspernatur vero.
+			The website was created mostly to try out the new
+			<a href="https://v3.nuxtjs.org/">Nuxt 3</a>
+			framework.
 		</p>
 	</div>
 </template>
