@@ -43,7 +43,12 @@ body {
 	color: var(--primary-text);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-weight: 300;
 }
 
@@ -55,4 +60,14 @@ p {
 a {
 	color: var(--primary-text);
 	font-weight: 600;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td,
+th {
+	padding: 0.1em;
+	border: 1px solid var(--background-alt);
 }

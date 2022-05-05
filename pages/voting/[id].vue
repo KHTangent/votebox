@@ -1,7 +1,8 @@
 <template>
 	<div v-if="data">
 		<h1>{{ data.title }}</h1>
-		<VBButton @click="refresh()"> Refresh </VBButton>
+		<VBButton class="button" @click="refresh()"> Refresh </VBButton>
+		<VBButton class="button" @click="sortOptions">Sort</VBButton>
 		<table>
 			<tr>
 				<th>Option</th>
@@ -41,9 +42,6 @@ const { data, pending, refresh, error } = await useFetch(
 		server: false,
 	}
 );
-if (data.value) {
-	data.value.options.sort((a, b) => b.votes - a.votes);
-}
 
 async function getBallotUrl() {
 	copyButtonText.value = "Copy";
@@ -62,6 +60,14 @@ async function copyBallot() {
 	await navigator.clipboard.writeText(ballot.value);
 	copyButtonText.value = "Copied!";
 }
+
+function sortOptions() {
+	data.value.options.sort((a, b) => b.votes - a.votes);
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.button {
+	margin: 0.4em;
+}
+</style>
