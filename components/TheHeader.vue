@@ -29,14 +29,15 @@ let localLogin = useLocalLogin();
 let localLoginCookie = useCookie("token");
 
 async function logout() {
+	localLoginCookie.value = "";
+	const temp = localLogin.value.substring(0);
+	localLogin.value = "";
 	await $fetch("/api/logout", {
 		method: "POST",
 		headers: {
-			Authorization: "Bearer " + localLogin.value,
+			Authorization: "Bearer " + temp,
 		},
 	});
-	localLoginCookie.value = "";
-	localLogin.value = "";
 	navigateTo({ path: "/" });
 }
 </script>
