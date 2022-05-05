@@ -20,6 +20,9 @@
 		<VBButton v-if="ballot.length > 0" @click="copyBallot">{{
 			copyButtonText
 		}}</VBButton>
+		<VBButton look="error" @click="deleteButton">
+			{{ deleteButtonText }}
+		</VBButton>
 	</div>
 	<div v-else>
 		<p>Loading...</p>
@@ -31,6 +34,7 @@ const route = useRoute();
 const token = useLocalLogin();
 let ballot = ref("");
 let copyButtonText = ref("Copy");
+let deleteButtonText = ref("Delete");
 
 const { data, pending, refresh, error } = await useFetch(
 	`/api/voting/${route.params.id}`,
@@ -63,6 +67,20 @@ async function copyBallot() {
 
 function sortOptions() {
 	data.value.options.sort((a, b) => b.votes - a.votes);
+}
+
+async function deleteButton() {
+	if (deleteButtonText.value === "Delete") {
+		deleteButtonText.value = "Confirm?";
+		return;
+	}
+	await $fetch(`/api/voting/${route.params.id}`, {
+		method: "DELETE",
+		headers: {
+			Authorization: "Bearer " + token.value,
+		},
+	});
+	navigateTo("/votings");
 }
 </script>
 

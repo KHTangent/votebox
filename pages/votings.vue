@@ -47,6 +47,10 @@ async function getBallotUrl(id: string) {
 	const fullUrl = `${url}/vote/${id}/${newData.token}`;
 	await navigator.clipboard.writeText(fullUrl);
 }
+
+onMounted(async () => {
+	await refresh();
+});
 </script>
 
 <style scoped></style>

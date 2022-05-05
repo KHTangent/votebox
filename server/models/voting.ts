@@ -183,4 +183,11 @@ export default class Voting {
 			});
 		}
 	}
+
+	async remove(pool: pg.Pool) {
+		await pool.query({
+			text: "DELETE FROM votings WHERE id = $1",
+			values: [this.id],
+		});
+	}
 }

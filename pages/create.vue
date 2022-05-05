@@ -75,8 +75,7 @@ async function createVoting() {
 		},
 		body: payload,
 	});
-	// Temporary
-	errorMessage.value = `Vote ${newVote.title} created with id ${newVote.id}`;
+	navigateTo(`/voting/${newVote.id}`);
 }
 
 function decreaseOptions() {
