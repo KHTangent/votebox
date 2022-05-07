@@ -19,6 +19,13 @@ export default class User {
 		this.username = username;
 	}
 
+	/**
+	 * Fetches a user from the database by ID
+	 * @param pool Database connection pool to use
+	 * @param uuid UUID of user to fetch
+	 * @returns Found user
+	 * @throws Relevant H3Error if anything goes wrong
+	 */
 	static async fromUuid(pool: pg.Pool, uuid: string) {
 		const query = {
 			text: "SELECT * FROM users WHERE id = $1",
@@ -32,6 +39,14 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	/**
+	 * Create a new user with the specified credentials
+	 * @param pool Database connection pool to use
+	 * @param username Username of new user
+	 * @param password Plaintext password to use
+	 * @returns Newly created user
+	 * @throws Relevant H3Error if something goes wrong
+	 */
 	static async register(pool: pg.Pool, username: string, password: string) {
 		const pwHash = await hash(password);
 		const query = {
@@ -66,6 +81,11 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	/**
+	 * Fetches a user by access token
+	 * @param pool Database connection pool to use
+	 * @param token Access token
+	 */
 	static async fromToken(pool: pg.Pool, token: string) {
 		let query = {
 			text:
@@ -84,6 +104,14 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	/**
+	 * Fetches a user by credentials
+	 * @param pool Database connection pool to use
+	 * @param username Username to log in
+	 * @param password Plaintext password
+	 * @returns Found user
+	 * @throws Relevant H3Error if something goes wrong, like incorrect credentials
+	 */
 	static async login(pool: pg.Pool, username: string, password: string) {
 		const query = {
 			text: "SELECT * FROM users WHERE username = $1",
@@ -100,6 +128,11 @@ export default class User {
 		return new User(foundUser.id, foundUser.username);
 	}
 
+	/**
+	 * Invalidates one or more access tokens
+	 * @param pool Database connection pool to use
+	 * @param token Access token to invalidate. If empty, invalidate all tokens belonging to this user.
+	 */
 	async logout(pool: pg.Pool, token?: string) {
 		let query: pg.QueryConfig;
 		if (token) {
@@ -116,6 +149,10 @@ export default class User {
 		await pool.query(query);
 	}
 
+	/**
+	 * Generates a new access token for this user
+	 * @param pool Database connection pool to use
+	 */
 	async getAccessToken(pool: pg.Pool): Promise<string> {
 		const token = (await randomBytesPromisify(64)).toString("base64");
 		const query = {

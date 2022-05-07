@@ -7,6 +7,9 @@ interface CreationRequestBody {
 	options: string[];
 }
 
+/**
+ * Creates a new voting. Accepts a JSON object describing the new voting
+ */
 export default defineEventHandler(async (e) => {
 	const pool = await useDbPool(e);
 	const user = await useLogin(e);

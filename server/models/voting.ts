@@ -30,10 +30,22 @@ export default class Voting {
 		this.options = options;
 	}
 
-	static async fromUuid(pool: pg.Pool, id: string, ownerId?: string) {
+	/**
+	 * Fetches a voting from the database by ID
+	 * @param pool Database connection pool to use
+	 * @param uuid UUID of voting to fetch
+	 * @param ownerId If provided, verify that the fetched voting belongs to a user with this UUID
+	 * @returns If a voting is found, the voting. Otherwise throws a H3Error
+	 * @throws Relevant H3Error if anything goes wrong
+	 */
+	static async fromUuid(
+		pool: pg.Pool,
+		uuid: string,
+		ownerId?: string
+	): Promise<Voting> {
 		let query = {
 			text: "SELECT * FROM votings WHERE id = $1",
-			values: [id],
+			values: [uuid],
 		};
 		const result = await pool.query(query);
 		if (result.rowCount < 1) {
@@ -56,26 +68,50 @@ export default class Voting {
 		);
 	}
 
-	static async getOwnedBy(pool: pg.Pool, ownerId: string): Promise<Voting[]> {
+	/**
+	 * Finds all votings owned by a user
+	 * @param pool Database connection pool to use
+	 * @param owner UUID or instance of user to find votings owned by
+	 * @returns Array of Votings, **without** options
+	 */
+	static async getOwnedBy(
+		pool: pg.Pool,
+		owner: string | User
+	): Promise<Voting[]> {
+		let ownerId: string;
+		if (owner instanceof User) {
+			ownerId = owner.id;
+		} else {
+			ownerId = owner;
+		}
 		const query = {
 			text: "SELECT id, title FROM votings WHERE owner = $1",
 			values: [ownerId],
 		};
 		const results = await pool.query(query);
 		if (results.rowCount > 0) {
-			const owner = await User.fromUuid(pool, ownerId);
-			return results.rows.map((e) => new Voting(e.id, owner, e.title, []));
+			const ownerObj = await User.fromUuid(pool, ownerId);
+			return results.rows.map((e) => new Voting(e.id, ownerObj, e.title, []));
 		} else {
 			return [];
 		}
 	}
 
+	/**
+	 * Create a new voting
+	 * @param pool Database connection pool to use
+	 * @param owner User who should own the voting
+	 * @param title Voting title/name
+	 * @param options Array of strings representing options in the new voting
+	 * @returns The newly created voting
+	 * @throws Relevant H3Error if anything goes wrong
+	 */
 	static async create(
 		pool: pg.Pool,
 		owner: User,
 		title: string,
 		options: string[]
-	) {
+	): Promise<Voting> {
 		if (options.length < 1) {
 			throw createError({
 				statusCode: 400,
@@ -122,6 +158,12 @@ export default class Voting {
 		else throw createError({ statusCode: 500 });
 	}
 
+	/**
+	 * Create a new voting token, or ballot, for a voting
+	 * Note that no owner verification is performed
+	 * @param pool Database connection pool to use
+	 * @returns Token that can be used to cast a single vote
+	 */
 	async issueToken(pool: pg.Pool): Promise<string> {
 		const query = {
 			text: "INSERT INTO voting_tokens(voting_id) VALUES ($1) RETURNING token",
@@ -136,6 +178,12 @@ export default class Voting {
 		return result.rows[0].token;
 	}
 
+	/**
+	 * Checks if a voting token is valid for this voting.
+	 * @param pool Database connection pool to use
+	 * @param token Token to check
+	 * @throws 400 H3Error if token is invalid
+	 */
 	async checkToken(pool: pg.Pool, token: string) {
 		const query = {
 			text: "SELECT * FROM voting_tokens WHERE voting_id = $1 AND token = $2",
@@ -147,6 +195,12 @@ export default class Voting {
 		}
 	}
 
+	/**
+	 * Consume a voting token to cast a vote (increment option.votes by 1)
+	 * @param pool Database connection pool to use
+	 * @param token Voting token to use. Will be invalidated if `vote` is valid
+	 * @param vote String for which option to vote for
+	 */
 	async castVote(pool: pg.Pool, token: string, vote: string) {
 		const optionValid = this.options.findIndex((e) => e.name === vote);
 		if (optionValid === -1) {
@@ -184,6 +238,10 @@ export default class Voting {
 		}
 	}
 
+	/**
+	 * Deletes a voting, with all corresponding options and tokens
+	 * @param pool Database connection pool to use
+	 */
 	async remove(pool: pg.Pool) {
 		await pool.query({
 			text: "DELETE FROM votings WHERE id = $1",

@@ -5,6 +5,10 @@ interface VotingRequestBody {
 	name: string;
 }
 
+/**
+ * Casts a vote based on Voting ID and Token given as URL parameters. Accepts a JSON object with
+ * the name of the option to vote for.
+ */
 export default defineEventHandler(async (e) => {
 	const voteId = e.context.params.voteid;
 	const voteToken = e.context.params.token;
